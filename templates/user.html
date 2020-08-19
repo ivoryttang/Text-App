@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+<style>
+    head, body {
+        padding: 20px;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome</title>
+    <script type="text/javascript">
+        document.write(Date());
+    </script>
+
+</head>
+<body>
+{% block body %}
+<h1>Hello, {{ user.username }}</h1>
+<ul>
+    <li>Currently logged in as: {{ user.username }}</li>
+    <li><a href="{% url 'logout' %}">Logout</a></li>
+</ul>
+{% endblock %}
+
+<script type="text/javascript">
+   function getChannel() {
+        var selectedChannelName = selected_channel.options[selected_channel.selectedIndex].value;
+        document.getElementById("demo").innerHTML = selectedChannelName;
+   }
+</script>
+
+<select id="selected_channel" onchange="getChannel()">
+{% for channel in channels %}
+    <option value="{{ channel }}" selected="it">{{ channel }}</option>
+{% endfor %}
+</select>
+
+<form action="{% url 'new_channel' %}" method="post">
+    {% csrf_token %}
+    <input type="text" placeholder="channel name" name="new_channel"><br>
+    <input type="submit" value="Create New Channel">
+</form><br>
+
+<div id="demo">
+</div>
+
+<textarea id="all_messages_1" rows="10" cols="30">
+    {% for message in messages %}
+        {{ message.user }}: {{ message }}
+    {% endfor %}
+</textarea><br>
+
+<form action="{% url 'new_message' %}" method="post">
+    {% csrf_token %}
+    <input id="new_message" name="new_message" placeholder="new message">
+    <input type="submit" value="Send">
+</form>
+
+</body>
+
+</html>
